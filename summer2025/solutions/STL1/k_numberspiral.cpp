@@ -1,40 +1,58 @@
 #include <iostream>
 #include <vector>
+
 using namespace std;
+
 int main(){
+	
+	int n; cin >> n;
+	
+	vector<long long> res;
 
-    int n; cin >> n;
+	for(int i = 0; i < n; ++i){
+		int y, x; cin >> y >> x;
+		
+		// Determine which layer we are currently at
+		// Layer start with 1 located at (1.1)
+		int layer = max(y, x);
+		long long value;
+		// break into even and odd case
+		if(layer % 2 == 0){
+			// even layer
+			/* If x == layer, we are on the side of the layer
+			 * we attempt to walk from the ending point of previous layer y steps
+			 *
+			 * If y == layer, we are at the bottom of the layer
+			 * the easiest way is to walk from current layer's max L^2
+			 */
+			if(x == layer){
+				value = ((long long)(layer -1)*(layer-1)) + y;
+			}else{
+				value = (((long long)layer * layer)) - x + 1 ;
+			}
+		}else{
+			// odd layer
+			/* If x == layer, we are on the side of the layer
+			 * we attempt to walk down from the current layer's maximum L^2
+			 *
+			 * If y == layer, we are at the bottom of the layer
+			 * the easiest way is to walk from the end of previous layer x distance
+			 */
+			if(x == layer){
+				value = (((long long)layer * layer)) - y + 1 ;
+			}else{
+				value = ((long long)(layer -1)*(layer-1)) + x;
+			}
+		}
 
-    /*
-        Intuition:
-        If layer is even, top right value of the layer equals to layer^2
-        -   x == layer -> val = layer^2 - y + 1
-        -   y == layer -> val = (layer - 1)^2 + x
-        If layer is odd, bottom left value is layer^2
-        -   y == layer -> val = layer^2 - x + 1
-        -   x == layer -> val = (layer - 1)^2 + y
-        
-    */
+		res.push_back(value);
+	}
 
-    vector<long long> res;
-    while(n --){
-        // for tuple (row, col): col -> x, row -> y
-        long long x ,y; cin >> y >> x;
-        // determine which layer this coordinate is on
-        long long layer = max(x, y);
-        // determine the position squared
-        long long square = 1LL * (layer-1) * (layer - 1);
-
-        // apply formula for even and odd cases
-        if(square % 2){
-            if(y == layer) res.push_back(layer * layer - x + 1);
-            else res.push_back((layer - 1) * (layer - 1) + y);
-        }else{
-            if(x == layer) res.push_back(layer * layer - y + 1);
-            else res.push_back((layer-1) * (layer-1) + x);
-        }
-    }
-
-    for(auto v : res) cout << v << '\n';
-    return 0;
+	for(auto i : res){
+		cout << i << '\n';
+	}
+	
+	return 0;
 }
+
+
