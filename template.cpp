@@ -8,6 +8,7 @@
 #include <climits>
 #include <stack>
 #include <algorithm>
+#include <cctype> 
 
 using namespace std;
 
